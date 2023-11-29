@@ -21,8 +21,6 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-#define SIZEx 20
-#define SIZEy 10
 
 int main(void)
 {
@@ -47,13 +45,16 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    myGM = new GameMechs(26, 13); //makes board size 26 and 13
+    myGM = new GameMechs(30, 15); //makes board size 26 and 13
     myPlayer = new Player(myGM);  
     
 }
 
 void GetInput(void)
 {
+    if (MacUILib_hasChar()){
+        myGM->setInput(MacUILib_getChar());
+    }
     
 }
 
@@ -61,31 +62,31 @@ void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+    myGM->clearInput();
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
-
     objPos playerPos;
 
     myPlayer->getPlayerPos(playerPos);
 
-    for(int y = 0;y <= SIZEy - 1;y++)
+    for(int y = 0;y <= myGM->getBoardSizeY() - 1;y++)
     {
-        for(int x = 0;x <= SIZEx - 1;x++)
+        for(int x = 0;x <= myGM->getBoardSizeX() - 1;x++)
         {
-            if(y == 0 || y == SIZEy - 1)
+            if(y == 0 || y == myGM->getBoardSizeY() - 1)
             {
                 MacUILib_printf("%c", '#');
             }
-            else if(x == 0 || x == SIZEx - 1)
+            else if(x == 0 || x == myGM->getBoardSizeX() - 1)
             {
                 MacUILib_printf("%c", '#');
             }
             else if(x == playerPos.x && y == playerPos.y)
             {
-                MacUILib_printf("%c",playerPos.symbol);
+                MacUILib_printf("%c", playerPos.symbol);
             }
             else
             {
@@ -93,12 +94,9 @@ void DrawScreen(void)
             }
         }
         MacUILib_printf("%c",'\n');
-    }
-
-    objPos tempPos;
-    myPlayer->getPlayerPos(tempPos); //get the player pos.
-
-    MacUILib_printf("Boardsize: %dx%d, Playerpos: <%d %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempPos.x, tempPos.y, tempPos.symbol);
+    }    
+    
+    MacUILib_printf("Boardsize: %dx%d, Playerpos: <%d %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), playerPos.x, playerPos.y, playerPos.symbol);
 }
 
 void LoopDelay(void)
@@ -110,6 +108,9 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-  
+    
+    delete(myGM);
+    delete(myPlayer);
+
     MacUILib_uninit();
 }
