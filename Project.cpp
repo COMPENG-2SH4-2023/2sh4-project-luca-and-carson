@@ -45,9 +45,14 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    myGM = new GameMechs(30, 15); //makes board size 26 and 13
+    myGM = new GameMechs(30, 15); //makes board size 30 and 15
     myPlayer = new Player(myGM);  
     
+
+    //think about when to generate the new food
+    //think about whether you want to set up a debug key to call the food generatuon routine for verify.
+
+    //generate food requires player ref. provide after player object is instantiated
 }
 
 void GetInput(void)
@@ -96,7 +101,7 @@ void DrawScreen(void)
         MacUILib_printf("%c",'\n');
     }    
     
-    MacUILib_printf("Boardsize: %dx%d, Playerpos: <%d %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), playerPos.x, playerPos.y, playerPos.symbol);
+    MacUILib_printf("Score: %d, Boardsize: %dx%d, Playerpos: <%d %d> + %c\n", myGM->getScore(), myGM->getBoardSizeX(), myGM->getBoardSizeY(), playerPos.x, playerPos.y, playerPos.symbol);
 }
 
 void LoopDelay(void)
@@ -109,8 +114,8 @@ void CleanUp(void)
 {
     MacUILib_clearScreen();    
     
-    delete(myGM);
-    delete(myPlayer);
+    delete myGM;
+    delete myPlayer;
 
     MacUILib_uninit();
 }
