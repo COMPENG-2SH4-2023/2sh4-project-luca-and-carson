@@ -13,6 +13,7 @@ GameMechs* myGM;
 Player* myPlayer;
 
 
+
 void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
@@ -22,9 +23,6 @@ void CleanUp(void);
 
 #define SIZEx 20
 #define SIZEy 10
-
-Player* HeadPos;
-
 
 int main(void)
 {
@@ -49,8 +47,6 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    
-    
     myGM = new GameMechs(26, 13); //makes board size 26 and 13
     myPlayer = new Player(myGM);  
     
@@ -64,11 +60,16 @@ void GetInput(void)
 void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
+    myPlayer->movePlayer();
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
+
+    objPos playerPos;
+
+    myPlayer->getPlayerPos(playerPos);
 
     for(int y = 0;y <= SIZEy - 1;y++)
     {
@@ -82,9 +83,9 @@ void DrawScreen(void)
             {
                 MacUILib_printf("%c", '#');
             }
-            else if(x == HeadPos.x && y == HeadPos.y)
+            else if(x == playerPos.x && y == playerPos.y)
             {
-                MacUILib_printf("%c",HeadPos.symbol);
+                MacUILib_printf("%c",playerPos.symbol);
             }
             else
             {
@@ -92,7 +93,7 @@ void DrawScreen(void)
             }
         }
         MacUILib_printf("%c",'\n');
-    }    
+    }
 
     objPos tempPos;
     myPlayer->getPlayerPos(tempPos); //get the player pos.

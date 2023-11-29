@@ -62,6 +62,38 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
+    switch(mainGameMechsRef->getInput()){
+        case UP:
+            if(playerPos.y == SIZEy - 9){
+                playerPos.y = SIZEy - 1;
+                break;
+            }
+            playerPos.y--;
+            break;
+
+        case DOWN:
+            if(playerPos.y == SIZEy - 1){
+                playerPos.y = SIZEy - 9;
+                break;
+            }
+            playerPos.y++;
+            break;
+
+        case RIGHT:
+            if(playerPos.x == SIZEx - 1){
+                playerPos.x = SIZEx - 19;
+                break;
+            }
+            playerPos.x++;
+            break;
+
+        case LEFT:
+            if(playerPos.x == SIZEx - 19){
+                playerPos.x = SIZEx - 1;
+                break;
+            }
+            playerPos.x--;
+            break;
+    }
     // PPA3 Finite State Machine logic
 }
-
