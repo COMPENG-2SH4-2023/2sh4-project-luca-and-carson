@@ -45,7 +45,7 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    myGM = new GameMechs(26, 13); //makes board size 26 and 13
+    myGM = new GameMechs(30, 15); //makes board size 26 and 13
     myPlayer = new Player(myGM);  
     
 }
