@@ -58,6 +58,9 @@ void Initialize(void)
 
 void GetInput(void)
 {
+    if (MacUILib_hasChar()){
+        myGM->setInput(MacUILib_getChar());
+    }
     
 }
 
@@ -69,6 +72,10 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
+
+    objPos playerPos;
+
+    myPlayer->getPlayerPos(playerPos);
 
     for(int y = 0;y <= SIZEy - 1;y++)
     {
@@ -82,9 +89,9 @@ void DrawScreen(void)
             {
                 MacUILib_printf("%c", '#');
             }
-            else if(x == HeadPos.x && y == HeadPos.y)
+            else if(x == HeadPos->playerPos.x && y == HeadPos->playerPos.y)
             {
-                MacUILib_printf("%c",HeadPos.symbol);
+                MacUILib_printf("%c",HeadPos->playerPos.symbol);
             }
             else
             {
@@ -92,11 +99,13 @@ void DrawScreen(void)
             }
         }
         MacUILib_printf("%c",'\n');
+        
+        
     }    
 
     objPos tempPos;
     myPlayer->getPlayerPos(tempPos); //get the player pos.
-
+    
     MacUILib_printf("Boardsize: %dx%d, Playerpos: <%d %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempPos.x, tempPos.y, tempPos.symbol);
 }
 
@@ -109,6 +118,9 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-  
+    
+    delete(myGM);
+    delete(myPlayer);
+
     MacUILib_uninit();
 }

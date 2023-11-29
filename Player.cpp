@@ -28,6 +28,7 @@ void Player::getPlayerPos(objPos &returnPos)
 
 void Player::updatePlayerDir()
 {
+    
     switch(mainGameMechsRef->getInput())
     {
             case 'w':
