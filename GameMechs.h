@@ -26,6 +26,10 @@ class GameMechs
         int boardSizeX;
         int boardSizeY;
 
+        objPos foodPos;
+        bool loseFlag;
+        int score;
+
     public:
         GameMechs();
         GameMechs(int boardX, int boardY);

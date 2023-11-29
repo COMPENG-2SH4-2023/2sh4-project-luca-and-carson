@@ -1,8 +1,9 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
-#include "GameMechs.h"
 #include "Player.h"
+#include "GameMechs.h"
+
 
 using namespace std;
 
@@ -19,6 +20,10 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
+#define SIZEx 20
+#define SIZEy 10
+
+Player* HeadPos;
 
 
 int main(void)
@@ -48,6 +53,7 @@ void Initialize(void)
     
     myGM = new GameMechs(26, 13); //makes board size 26 and 13
     myPlayer = new Player(myGM);  
+    
 }
 
 void GetInput(void)
@@ -62,8 +68,31 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    
     MacUILib_clearScreen();
+
+    for(int y = 0;y <= SIZEy - 1;y++)
+    {
+        for(int x = 0;x <= SIZEx - 1;x++)
+        {
+            if(y == 0 || y == SIZEy - 1)
+            {
+                MacUILib_printf("%c", '#');
+            }
+            else if(x == 0 || x == SIZEx - 1)
+            {
+                MacUILib_printf("%c", '#');
+            }
+            else if(x == HeadPos.x && y == HeadPos.y)
+            {
+                MacUILib_printf("%c",HeadPos.symbol);
+            }
+            else
+            {
+                MacUILib_printf("%c", ' ');
+            }
+        }
+        MacUILib_printf("%c",'\n');
+    }    
 
     objPos tempPos;
     myPlayer->getPlayerPos(tempPos); //get the player pos.
