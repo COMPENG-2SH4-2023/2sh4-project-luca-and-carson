@@ -1,14 +1,13 @@
 #include "Player.h"
+#include "GameMechs.h"
 
-#define SIZEx 20
-#define SIZEy 10
 
 
 Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-    playerPos.setObjPos(SIZEx/2,SIZEy/2,'*');
+    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
     // more actions to be included
     playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '*');
 }
@@ -32,25 +31,29 @@ void Player::updatePlayerDir()
     switch(mainGameMechsRef->getInput())
     {
             case 'w':
-                if(myDir != DOWN){
+                if(myDir != DOWN)
+                {
                     myDir = UP;
                 }
                 break;
 
             case 's':
-                if(myDir != UP){
+                if(myDir != UP)
+                {
                     myDir = DOWN;
                 }
                 break;
 
             case 'a':
-                if(myDir != RIGHT){
+                if(myDir != RIGHT)
+                {
                     myDir = LEFT;
                 }
                 break;
 
             case 'd':
-                if(myDir != LEFT){
+                if(myDir != LEFT)
+                {
                     myDir = RIGHT;
                 }
                 break;
@@ -63,6 +66,42 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
+    switch(myDir){
+        case UP:
+            if(playerPos.y == 1)
+            {
+                playerPos.y = mainGameMechsRef->getBoardSizeY() - 1;
+                break;
+            }
+            playerPos.y--;
+            break;
+
+        case DOWN:
+            if(playerPos.y == mainGameMechsRef->getBoardSizeY() - 1)
+            {
+                playerPos.y = 1;
+                break;
+            }
+            playerPos.y++;
+            break;
+
+        case RIGHT:
+            if(playerPos.x == mainGameMechsRef->getBoardSizeX() - 1)
+            {
+                playerPos.x = 1;
+                break;
+            }
+            playerPos.x++;
+            break;
+
+        case LEFT:
+            if(playerPos.x == 1)
+            {
+                playerPos.x = mainGameMechsRef->getBoardSizeX() - 1;
+                break;
+            }
+            playerPos.x--;
+            break;
+    }
     // PPA3 Finite State Machine logic
 }
-
