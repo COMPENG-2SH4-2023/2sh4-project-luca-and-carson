@@ -55,7 +55,7 @@ void Initialize(void)
 
     //think about when to generate the new food
     //think about whether you want to set up a debug key to call the food generatuon routine for verify.
-    //foodPos->generateFood(playerPos);
+    foodPos->generateFood(playerPos);
     //generate food requires player ref. provide after player object is instantiated
 }
 
@@ -72,6 +72,7 @@ void RunLogic(void)
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     myGM->clearInput();
+    //foodPos->generateFood(playerPos);
 }
 
 void DrawScreen(void)
@@ -85,6 +86,8 @@ void DrawScreen(void)
     {
         for(int x = 0;x <= myGM->getBoardSizeX() - 1;x++)
         {
+            objPos temp;
+            foodPos->getfoodPos(temp);
             if(y == 0 || y == myGM->getBoardSizeY() - 1)
             {
                 MacUILib_printf("%c", '#');
@@ -97,9 +100,9 @@ void DrawScreen(void)
             {
                 MacUILib_printf("%c", playerPos.symbol);
             }
-            // else if (x == foodPos->x && y == foodPos->y){
-            //     MacUILib_printf("f");
-            // }
+            else if (x == temp.x && y == temp.y){
+                MacUILib_printf("%c", temp.symbol);
+            }
 
             else
             {
