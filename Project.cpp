@@ -3,7 +3,7 @@
 #include "objPos.h"
 #include "Player.h"
 #include "GameMechs.h"
-
+#include "Food.h"
 
 using namespace std;
 
@@ -11,6 +11,8 @@ using namespace std;
 
 GameMechs* myGM;
 Player* myPlayer;
+Food* foodPos;
+objPos playerPos;
 
 
 
@@ -47,11 +49,12 @@ void Initialize(void)
 
     myGM = new GameMechs(30, 15); //makes board size 30 and 15
     myPlayer = new Player(myGM);  
+    foodPos = new Food();
     
 
     //think about when to generate the new food
     //think about whether you want to set up a debug key to call the food generatuon routine for verify.
-
+    foodPos->generateFood(playerPos);
     //generate food requires player ref. provide after player object is instantiated
 }
 
@@ -73,7 +76,7 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
-    objPos playerPos;
+    
 
     myPlayer->getPlayerPos(playerPos);
 
@@ -93,6 +96,10 @@ void DrawScreen(void)
             {
                 MacUILib_printf("%c", playerPos.symbol);
             }
+            else if (x == foodPos->x && y == foodPos->y){
+                MacUILib_printf("f");
+            }
+
             else
             {
                 MacUILib_printf("%c", ' ');
@@ -102,6 +109,7 @@ void DrawScreen(void)
     }    
     
     MacUILib_printf("Score: %d, Boardsize: %dx%d, Playerpos: <%d %d> + %c\n", myGM->getScore(), myGM->getBoardSizeX(), myGM->getBoardSizeY(), playerPos.x, playerPos.y, playerPos.symbol);
+    MacUILib_printf("food x: %d, food y: %d", foodPos->x, foodPos->y);
 }
 
 void LoopDelay(void)
@@ -116,6 +124,6 @@ void CleanUp(void)
     
     delete myGM;
     delete myPlayer;
-
+    delete foodPos;
     MacUILib_uninit();
 }

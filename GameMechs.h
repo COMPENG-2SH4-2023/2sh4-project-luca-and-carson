@@ -30,6 +30,7 @@ class GameMechs
         int score;
 
     public:
+        objPos* randpos;
         GameMechs();
         GameMechs(int boardX, int boardY);
         

@@ -1,8 +1,10 @@
   #include "GameMechs.h"
   #include "MacUILib.h"
 
+#include "objPosArrayList.h"
 
  //think aboutn where to seed the rmg
+//objPos* randpos;
 
 GameMechs::GameMechs()
 {
@@ -13,7 +15,7 @@ GameMechs::GameMechs()
     boardSizeX = 30;
     boardSizeY = 15;
 
-    foodPos.setObjPos(-1, -1, 'f'); //initialize food position outside of game board
+    
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -83,25 +85,6 @@ int GameMechs::getScore(){
 }
 
 void GameMechs::incrementScore(){
-    score ++;
+    score++;
 }
 
-void GameMechs::generateFood(objPos blockOff){
-    //generate random x and y coords and make sure they are not border or blockoff pos.
-    int rand_x, rand_y;
-    rand_x = rand() % (getBoardSizeX() - 2) + 1;
-    rand_y = rand() % (getBoardSizeY() - 2) + 1;
-    //check x and y against 0 and boardsizeX / Y.
-    if(rand_x == 0 || rand_y == 0 ){
-
-    }
-    else if (rand_x == getBoardSizeX() - 1 || rand_y == getBoardSizeY() - 1){
-
-    }
-    //else if (blockOff->isPosEqual())
-    //remember isPosequal() method.
-}
-             
-void getfoodPos(objPos &returnPos){
-
-}
