@@ -71,6 +71,7 @@ void RunLogic(void)
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     myGM->clearInput();
+    foodPos->generateFood(playerPos);
 }
 
 void DrawScreen(void)
@@ -97,7 +98,7 @@ void DrawScreen(void)
                 MacUILib_printf("%c", playerPos.symbol);
             }
             else if (x == foodPos->x && y == foodPos->y){
-                MacUILib_printf("f");
+                MacUILib_printf("%c", foodPos->symbol);
             }
 
             else
