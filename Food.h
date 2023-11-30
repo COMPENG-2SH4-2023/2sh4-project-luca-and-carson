@@ -1,6 +1,6 @@
 
 #include "MacUILib.h"
-
+#include "objPos.h"
 #include "GameMechs.h"
 
 #ifndef FOOD_H
