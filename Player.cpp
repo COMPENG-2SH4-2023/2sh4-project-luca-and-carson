@@ -8,21 +8,33 @@ Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
+    objPos tempPos;
+    tempPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
     // more actions to be included
-    //playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '*');
+    foodInfo = new Food();
+    playerPosList = new objPosArrayList();
+    playerPosList->insertHead(tempPos);
+
+    //for debugging purpose insert andother 4 segemtns
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
 }
 
 
 Player::~Player()
 {
     delete mainGameMechsRef;
+    delete playerPosList;
+    delete foodInfo;
     // delete any heap members here
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+objPosArrayList* Player::getPlayerPos()
 {
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    return playerPosList;
+    //returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
     // return the reference to the playerPos arrray list
 }
 
@@ -67,42 +79,76 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
+    //objPos newHead;
+    objPos currentHead; // holding position info of the current head
+    playerPosList->getHeadElement(currentHead);
+
     switch(myDir){
         case UP:
-            if(playerPos.y == 1)
+            if(currentHead.y == 1)
             {
-                playerPos.y = mainGameMechsRef->getBoardSizeY() - 2;
+                currentHead.y = mainGameMechsRef->getBoardSizeY() - 2;
                 break;
             }
-            playerPos.y--;
+            currentHead.y--;
             break;
 
         case DOWN:
-            if(playerPos.y == mainGameMechsRef->getBoardSizeY() - 2)
+            if(currentHead.y == mainGameMechsRef->getBoardSizeY() - 2)
             {
-                playerPos.y = 1;
+                currentHead.y = 1;
                 break;
             }
-            playerPos.y++;
+            currentHead.y++;
             break;
 
         case RIGHT:
-            if(playerPos.x == mainGameMechsRef->getBoardSizeX() - 2)
+            if(currentHead.x == mainGameMechsRef->getBoardSizeX() - 2)
             {
-                playerPos.x = 1;
+                currentHead.x = 1;
                 break;
             }
-            playerPos.x++;
+            currentHead.x++;
             break;
 
         case LEFT:
-            if(playerPos.x == 1)
+            if(currentHead.x == 1)
             {
-                playerPos.x = mainGameMechsRef->getBoardSizeX() - 2;
+                currentHead.x = mainGameMechsRef->getBoardSizeX() - 2;
                 break;
             }
-            playerPos.x--;
+            currentHead.x--;
+            break;
+        case STOP:
+        default:
             break;
     }
     // PPA3 Finite State Machine logic
+    //new current head should be inserted into the head of the list
+    playerPosList->insertHead(currentHead);
+    
+    //then remove tail
+    playerPosList->removeTail();
 }
+
+bool Player::checkFoodConsumption(){
+    objPos tempFoodPos;
+    foodInfo->getfoodPos(tempFoodPos);
+
+    objPos tempHeadPos;
+    playerPosList->getHeadElement(tempHeadPos);
+    if(tempHeadPos.x == tempFoodPos.x && tempHeadPos.y == tempFoodPos.y){
+        return true;
+    }
+    else{
+        return false;
+    }
+        
+}        
+void Player::increasePlayerLength(){
+    objPos tempTailPos;
+    playerPosList->getTailElement(tempTailPos);
+
+    playerPosList->insertTail(tempTailPos);
+}
+        

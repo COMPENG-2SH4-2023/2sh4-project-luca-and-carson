@@ -4,6 +4,7 @@
 #include "GameMechs.h"
 #include "objPos.h"
 #include "objPosArrayList.h"
+#include "Food.h"
 
 class Player
 {
@@ -19,13 +20,18 @@ class Player
         Player(GameMechs* thisGMRef);
         ~Player();
 
-        void getPlayerPos(objPos &returnPos); // Upgrade this in iteration 3.
+        //void getPlayerPos(objPos &returnPos); // Upgrade this in iteration 3.
+        objPosArrayList* getPlayerPos();
         void updatePlayerDir();
         void movePlayer();
+        bool checkFoodConsumption();
+        void increasePlayerLength();
+        
     private:
-        objPos playerPos;   // Upgrade this in iteration 3.       
+        objPosArrayList* playerPosList;   // Upgrade this in iteration 3.       
         enum Dir myDir;
-
+        Food* foodInfo;
+        
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
 };

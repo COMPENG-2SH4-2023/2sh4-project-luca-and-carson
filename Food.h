@@ -1,6 +1,6 @@
 
 #include "MacUILib.h"
-
+#include "objPos.h"
 #include "GameMechs.h"
 
 #ifndef FOOD_H
@@ -12,9 +12,6 @@ class Food
         objPos foodPos;
         GameMechs mechInfo;
     public:
-        int x;
-        int y;
-        int symbol;
 
         Food();
         ~Food();
