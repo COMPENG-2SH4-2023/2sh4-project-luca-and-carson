@@ -49,15 +49,12 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGM = new GameMechs(30, 15); //makes board size 30 and 15
-    myPlayer = new Player(myGM);  
-    foodPos = new Food();
+    foodPos = new Food(myGM);
+    myPlayer = new Player(myGM, foodPos);  
     
-
+    foodPos->generateFood(playerPos);
     //think about when to generate the new food
     //think about whether you want to set up a debug key to call the food generatuon routine for verify.
-    
-    objPos tempPos(-1,-1,'f'); //tester setup 
-    foodPos->generateFood(tempPos);
     //generate food requires player ref. provide after player object is instantiated
 }
 
@@ -71,10 +68,6 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-    if(myPlayer->checkFoodConsumption()){
-        myPlayer->increasePlayerLength();
-        foodPos->generateFood(playerPos);
-    }
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     myGM->clearInput();
@@ -96,9 +89,9 @@ void DrawScreen(void)
     objPos tempF;
     foodPos->getfoodPos(tempF);
 
-    for(int y = 0;y <= myGM->getBoardSizeY() - 1; y++)
+    for(int y = 0; y <= myGM->getBoardSizeY() - 1; y++)
     {
-        for(int x = 0;x <= myGM->getBoardSizeX() - 1; x++)
+        for(int x = 0; x <= myGM->getBoardSizeX() - 1; x++)
         {
             drawn = false;
             for(int k = 0; k < playerBody->getSize(); k++){

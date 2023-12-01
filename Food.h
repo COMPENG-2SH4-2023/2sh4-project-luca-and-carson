@@ -10,10 +10,10 @@ class Food
 {
     private:
         objPos foodPos;
-        GameMechs mechInfo;
+        GameMechs* mechInfo;
     public:
 
-        Food();
+        Food(GameMechs* gameMechs);
         ~Food();
 
         void generateFood(objPos blockOff);

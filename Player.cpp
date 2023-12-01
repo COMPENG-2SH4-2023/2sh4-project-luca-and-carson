@@ -4,21 +4,15 @@
 
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* food)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
     objPos tempPos;
     tempPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
     // more actions to be included
-    foodInfo = new Food();
+    foodInfo = food;
     playerPosList = new objPosArrayList();
-    playerPosList->insertHead(tempPos);
-
-    //for debugging purpose insert andother 4 segemtns
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
     playerPosList->insertHead(tempPos);
 }
 
@@ -125,10 +119,18 @@ void Player::movePlayer()
     }
     // PPA3 Finite State Machine logic
     //new current head should be inserted into the head of the list
-    playerPosList->insertHead(currentHead);
+    if(checkFoodConsumption())
+    {
+        playerPosList->insertHead(currentHead);
+    }
+    else
+    {
+        playerPosList->insertHead(currentHead);
+        playerPosList->removeTail();
+    }
     
     //then remove tail
-    playerPosList->removeTail();
+    
 }
 
 bool Player::checkFoodConsumption(){
@@ -145,10 +147,9 @@ bool Player::checkFoodConsumption(){
     }
         
 }        
-void Player::increasePlayerLength(){
-    objPos tempTailPos;
-    playerPosList->getTailElement(tempTailPos);
-
-    playerPosList->insertTail(tempTailPos);
-}
+// void Player::increasePlayerLength(){
+//     objPos tempTailPos;
+//     playerPosList->getTailElement(tempTailPos);
+//     playerPosList->insertTail(tempTailPos);
+// }
         
