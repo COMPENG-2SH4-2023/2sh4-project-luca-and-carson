@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <time.h>
 
-objPos* randomPos = new objPos;
+objPos* randomPos = new objPos();
 
 Food::Food(){
     foodPos.setObjPos(-1, -1, 'f'); //initialize food position outside of game board
