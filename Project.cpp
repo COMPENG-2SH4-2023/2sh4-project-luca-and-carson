@@ -73,10 +73,14 @@ void GetInput(void)
 void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
-    myPlayer->movePlayer();
-    myGM->clearInput();
-    
-    //
+    if(myPlayer->checkSelfCollision())
+    {
+        myGM->setLoseFlag();
+    }else
+    {
+        myPlayer->movePlayer();
+        myGM->clearInput();
+    }
 }
 
 void DrawScreen(void)
@@ -133,8 +137,13 @@ void DrawScreen(void)
         MacUILib_printf("%c",'\n');
     }    
     
-    MacUILib_printf("Score: %d", myGM->getScore()); 
-    //MacUILib_printf("food x: %d, food y: %d", foodPos->x, foodPos->y);
+    MacUILib_printf("Score: %d\n", myGM->getScore()); 
+    if(myGM->getLoseFlagStatus()){
+        MacUILib_printf("You ate yourself: GAME OVER");
+    }
+    else if(myGM->getExitFlagStatus()){
+        MacUILib_printf("You have exited the game");
+    }
 }
 
 void LoopDelay(void)

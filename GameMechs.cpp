@@ -61,12 +61,10 @@ int GameMechs::getBoardSizeY()
 void GameMechs::setExitTrue()
 {
     exitFlag = true;
-    MacUILib_printf("You Lose");
 }
 
 void GameMechs::setLoseFlag(){
     loseFlag = true;
-    MacUILib_printf("Simply you Lose");
 }
 
 void GameMechs::setInput(char this_input)

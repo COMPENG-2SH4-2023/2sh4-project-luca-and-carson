@@ -20,12 +20,12 @@ class Player
         Player(GameMechs* thisGMRef, Food* food);
         ~Player();
 
-        //void getPlayerPos(objPos &returnPos); // Upgrade this in iteration 3.
         objPosArrayList* getPlayerPos();
         void updatePlayerDir();
         void movePlayer();
         bool checkFoodConsumption();
-        //void increasePlayerLength();
+        bool checkSelfCollision();
+        
         
     private:
         objPosArrayList* playerPosList;   // Upgrade this in iteration 3.       

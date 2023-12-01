@@ -64,6 +64,10 @@ void Player::updatePlayerDir()
                     myDir = RIGHT;
                 }
                 break;
+                
+            case ' ':
+                mainGameMechsRef->setExitTrue();
+                break;
 
             default:
                 break;
@@ -122,10 +126,8 @@ void Player::movePlayer()
     if(checkFoodConsumption()) //if food is consumed 
     {
         playerPosList->insertHead(currentHead); //increase the player 
-        //generate food
-        // objPos tempFoodPos;
-        // foodInfo->getfoodPos(tempFoodPos);
         foodInfo->generateFood(playerPosList);
+        mainGameMechsRef->incrementScore();
     }
     else
     {
@@ -151,9 +153,18 @@ bool Player::checkFoodConsumption(){
     }
         
 }        
-// void Player::increasePlayerLength(){
-//     objPos tempTailPos;
-//     playerPosList->getTailElement(tempTailPos);
-//     playerPosList->insertTail(tempTailPos);
-// }
+bool Player::checkSelfCollision(){
+    objPos tempHeadPos;
+    playerPosList->getHeadElement(tempHeadPos);
+    objPos tempPlayerElement;
+
+    for(int i = 1; i < playerPosList->getSize(); i++)
+    {
+        playerPosList->getElement(tempPlayerElement, i);
+        if(tempHeadPos.x == tempPlayerElement.x && tempHeadPos.y == tempPlayerElement.y){
+            return true;
+        }
+    }return false;
+
+}
         
