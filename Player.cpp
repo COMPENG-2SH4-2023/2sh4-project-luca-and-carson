@@ -119,13 +119,17 @@ void Player::movePlayer()
     }
     // PPA3 Finite State Machine logic
     //new current head should be inserted into the head of the list
-    if(checkFoodConsumption())
+    if(checkFoodConsumption()) //if food is consumed 
     {
-        playerPosList->insertHead(currentHead);
+        playerPosList->insertHead(currentHead); //increase the player 
+        //generate food
+        // objPos tempFoodPos;
+        // foodInfo->getfoodPos(tempFoodPos);
+        foodInfo->generateFood(playerPosList);
     }
     else
     {
-        playerPosList->insertHead(currentHead);
+        playerPosList->insertHead(currentHead); //otherwise use regular moving algorithm
         playerPosList->removeTail();
     }
     

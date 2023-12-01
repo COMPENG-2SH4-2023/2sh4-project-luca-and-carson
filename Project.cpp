@@ -14,6 +14,8 @@ GameMechs* myGM;
 Player* myPlayer;
 Food* foodPos;
 objPos playerPos;
+objPosArrayList* playerBody;
+
 
 
 
@@ -49,10 +51,12 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGM = new GameMechs(30, 15); //makes board size 30 and 15
+    playerBody = new objPosArrayList();
     foodPos = new Food(myGM);
     myPlayer = new Player(myGM, foodPos);  
     
-    foodPos->generateFood(playerPos);
+    playerBody = myPlayer->getPlayerPos();
+    foodPos->generateFood(playerBody);
     //think about when to generate the new food
     //think about whether you want to set up a debug key to call the food generatuon routine for verify.
     //generate food requires player ref. provide after player object is instantiated
@@ -83,7 +87,7 @@ void DrawScreen(void)
     // myPlayer->getPlayerPos(tempPos);
     bool drawn;
 
-    objPosArrayList* playerBody = myPlayer->getPlayerPos();
+    
     objPos tempBody;
 
     objPos tempF;
