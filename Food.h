@@ -13,12 +13,13 @@ class Food
         objPos foodPos;
         GameMechs* mechInfo;
         objPosArrayList* playerBody;
+        objPosArrayList* foodBucket;
     public:
 
         Food(GameMechs* gameMechs);
         ~Food();
 
-        void generateFood(objPosArrayList* blockOff);
+        void generateFood(objPosArrayList* blockOff, objPosArrayList* Bucket);
         void getfoodPos(objPos &returnPos);
 };
 

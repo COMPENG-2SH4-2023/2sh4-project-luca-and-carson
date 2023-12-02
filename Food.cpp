@@ -14,32 +14,74 @@ Food::Food(GameMechs* gameMechs){
 Food::~Food(){
     
 }
-void Food::generateFood(objPosArrayList* blockOff){
+void Food::generateFood(objPosArrayList* blockOff, objPosArrayList* foodBucket){
     //generate random x and y coords and make sure they are not border or blockoff pos.
-    int invalidXY = 1;
+    int count = 0;
     objPos randomPos;
     objPos tempBody;
-    playerBody = blockOff;
+    objPos tempFood;
 
     randomPos = objPos();
-    while(invalidXY == 1){
+    while(count < 4)
+    {
         randomPos.x = rand() % (mechInfo->getBoardSizeX() - 2) + 1;
         randomPos.y = rand() % (mechInfo->getBoardSizeY() - 2) + 1;
-        for(int i = 0; i < blockOff->getSize(); i++){ //to check each element of the current snake
-            playerBody->getElement(tempBody, i); //go to the element
-            //if(blockOff.isPosEqual(&tempBody)){
-            if (randomPos.x == tempBody.x && randomPos.y == tempBody.y){ //check if the elements position is equal to the random position
-                invalidXY = 1;//it is invalid if the desired food position is a current snake position
-            }
-            else{
-                foodPos.x = randomPos.x;
-                foodPos.y = randomPos.y;
-                invalidXY = 0;
+        randomPos.symbol = 'o';
+        bool validPos = true;
+        for(int i = 0; i < blockOff->getSize(); i++)//to check each element of the current snake
+        {
+            blockOff->getElement(tempBody, i); //go to the element
+            if(randomPos.x == tempBody.x && randomPos.y == tempBody.y)
+            {
+                validPos = false;
+                break;
             }
         }
-            
+        for(int j = 0; j < foodBucket->getSize(); j++)//to check each element of the already spawned food
+        {
+            foodBucket->getElement(tempFood, j);
+            if (randomPos.x == tempFood.x && randomPos.y == tempFood.y)//check if the elements position is equal to the random position
+            {
+                validPos = false;
+                break;
+            }
+        }
+        if(validPos)
+        {
+            foodBucket->insertTail(randomPos);
+            count++;
+        }
     }
-    //remember isPosequal() method.
+    while(count > 3 && count < 5)
+    {
+        randomPos.x = rand() % (mechInfo->getBoardSizeX() - 2) + 1;
+        randomPos.y = rand() % (mechInfo->getBoardSizeY() - 2) + 1;
+        randomPos.symbol = 'x';
+        bool validPos = true;
+        for(int i = 0; i < blockOff->getSize(); i++)//to check each element of the current snake
+        {
+            blockOff->getElement(tempBody, i); //go to the element
+            if(randomPos.x == tempBody.x && randomPos.y == tempBody.y)
+            {
+                validPos = false;
+                break;
+            }
+        }
+        for(int j = 0; j < foodBucket->getSize(); j++)//to check each element of the already spawned food
+        {
+            foodBucket->getElement(tempFood, j);
+            if (randomPos.x == tempFood.x && randomPos.y == tempFood.y)//check if the elements position is equal to the random position
+            {
+                validPos = false;
+                break;
+            }
+        }
+        if(validPos)
+        {
+            foodBucket->insertTail(randomPos);
+            count++;
+        }
+    }
 }
              
 void Food::getfoodPos(objPos &returnPos){

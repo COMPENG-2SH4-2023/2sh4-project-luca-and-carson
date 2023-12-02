@@ -60,6 +60,11 @@ void objPosArrayList::getElement(objPos &returnPos, int index)
 {
     returnPos = aList[index];
 }
+
+void objPosArrayList::resetSize()
+{
+    sizeList = 0;
+}
 // Paste your CUTE Tested implementation here.
 // Paste your CUTE Tested implementation here.
 // Paste your CUTE Tested implementation here.

@@ -15,6 +15,7 @@ Player* myPlayer;
 Food* foodPos;
 objPos playerPos;
 objPosArrayList* playerBody;
+objPosArrayList* foodBucket;
 
 
 
@@ -52,11 +53,12 @@ void Initialize(void)
 
     myGM = new GameMechs(30, 15); //makes board size 30 and 15
     playerBody = new objPosArrayList();
+    foodBucket = new objPosArrayList();
     foodPos = new Food(myGM);
-    myPlayer = new Player(myGM, foodPos);  
-    
+    myPlayer = new Player(myGM, foodPos, foodBucket);  
+
     playerBody = myPlayer->getPlayerPos();
-    foodPos->generateFood(playerBody);
+    foodPos->generateFood(playerBody, foodBucket);
     //think about when to generate the new food
     //think about whether you want to set up a debug key to call the food generatuon routine for verify.
     //generate food requires player ref. provide after player object is instantiated
@@ -86,22 +88,16 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
-    
-    // objPos tempPos;
-    // myPlayer->getPlayerPos(tempPos);
     bool drawn;
-
-    
     objPos tempBody;
-
     objPos tempF;
-    foodPos->getfoodPos(tempF);
 
     for(int y = 0; y <= myGM->getBoardSizeY() - 1; y++)
     {
         for(int x = 0; x <= myGM->getBoardSizeX() - 1; x++)
         {
             drawn = false;
+            bool food = true;
             for(int k = 0; k < playerBody->getSize(); k++){
                 playerBody->getElement(tempBody, k);
                 if(tempBody.x == x && tempBody.y == y){
@@ -112,32 +108,39 @@ void DrawScreen(void)
             }
             if(drawn) continue;
             //if player body was drawn do not draw anything below
-
-            if(y == 0 || y == myGM->getBoardSizeY() - 1)
+            for(int i = 0; i < foodBucket->getSize(); i++)
             {
-                MacUILib_printf("%c", '#');
+                foodBucket->getElement(tempF, i);
+                if (x == tempF.x && y == tempF.y)
+                {
+                    MacUILib_printf("%c", tempF.symbol);
+                    food = false;
+                }
             }
-            else if(x == 0 || x == myGM->getBoardSizeX() - 1)
+            if(food)
             {
-                MacUILib_printf("%c", '#');
-            }
-            // else if(x == tempPos.x && y == tempPos.y)
-            // {
-            //     MacUILib_printf("%c", tempPos.symbol);
-            // }
-            else if (x == tempF.x && y == tempF.y){
-                MacUILib_printf("%c", tempF.symbol);
-            }
-
-            else
-            {
-                MacUILib_printf("%c", ' ');
+                if(y == 0 || y == myGM->getBoardSizeY() - 1)
+                {
+                    MacUILib_printf("%c", '#');
+                }
+                else if(x == 0 || x == myGM->getBoardSizeX() - 1)
+                {
+                    MacUILib_printf("%c", '#');
+                }
+                else
+                {
+                    MacUILib_printf("%c", ' ');
+                }
             }
         }
         MacUILib_printf("%c",'\n');
     }    
     
-    MacUILib_printf("Score: %d\n", myGM->getScore()); 
+    MacUILib_printf("Score: %d\n", myGM->getScore());
+
+    MacUILib_printf("Collect an X: Add 5 to Score, 0 to Length\n");
+    MacUILib_printf("Collect an o: Add 1 to Score, 1 to Length\n");
+
     if(myGM->getLoseFlagStatus()){
         MacUILib_printf("You ate yourself: GAME OVER");
     }
@@ -154,7 +157,7 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    MacUILib_clearScreen();    
+    MacUILib_clearScreen();  
     
     delete myGM;
     delete myPlayer;

@@ -20,6 +20,7 @@ class objPosArrayList
         void insertTail(objPos thisPos);
         void removeHead();
         void removeTail();
+        void resetSize();
         
         int getSize();
         void getHeadElement(objPos &returnPos);
