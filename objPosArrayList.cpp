@@ -65,6 +65,3 @@ void objPosArrayList::resetSize()
 {
     sizeList = 0;
 }
-// Paste your CUTE Tested implementation here.
-// Paste your CUTE Tested implementation here.
-// Paste your CUTE Tested implementation here.
