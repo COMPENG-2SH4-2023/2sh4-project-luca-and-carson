@@ -12,32 +12,30 @@ Player::Player(GameMechs* thisGMRef, Food* food, objPosArrayList* Bucket)
     myDir = STOP;
 
     objPos tempPos;
-    tempPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
+    tempPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*'); //Initialize the head position 
 
     playerPosList = new objPosArrayList();
-    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos); //Setting head position to the temp position created
 }
 
 
 Player::~Player()
 {
+    // delete heap members here
     delete mainGameMechsRef;
     delete playerPosList;
     delete foodInfo;
-    // delete any heap members here
 }
 
 objPosArrayList* Player::getPlayerPos()
 {
     return playerPosList;
-    //returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
-    // return the reference to the playerPos arrray list
 }
 
 void Player::updatePlayerDir()
 {
     
-    switch(mainGameMechsRef->getInput())
+    switch(mainGameMechsRef->getInput()) //checks the input and switches the direction based on the input
     {
             case 'w':
                 if(myDir != DOWN)
@@ -73,8 +71,7 @@ void Player::updatePlayerDir()
 
             default:
                 break;
-    }
-    // PPA3 input processing logic        
+    } 
 }
 
 void Player::movePlayer()
@@ -83,7 +80,8 @@ void Player::movePlayer()
     objPos currentHead; // holding position info of the current head
     playerPosList->getHeadElement(currentHead);
 
-    switch(myDir){
+    switch(myDir) //Move the snake based on the direction
+    {
         case UP:
             if(currentHead.y == 1)
             {
@@ -123,24 +121,22 @@ void Player::movePlayer()
         default:
             break;
     }
-    // PPA3 Finite State Machine logic
-    //new current head should be inserted into the head of the list
-    if(checkFoodConsumptionNormal()) //if food is consumed 
+    if(checkFoodConsumptionNormal()) //if normal food is consumed 
     {
         playerPosList->insertHead(currentHead); //increase the player 
-        foodBucket->resetSize();
-        foodInfo->generateFood(playerPosList, foodBucket);
-        mainGameMechsRef->incrementScore();
+        foodBucket->resetSize(); //reset the food bucket for new food
+        foodInfo->generateFood(playerPosList, foodBucket); //Generate new food
+        mainGameMechsRef->incrementScore(); //Increment the score 
     }
-    else if(checkFoodConsumptionSpecial())
+    else if(checkFoodConsumptionSpecial()) //if special food is consumed
     {
-        playerPosList->insertHead(currentHead);
+        playerPosList->insertHead(currentHead); //dont increase the player length
         playerPosList->removeTail();
-        foodBucket->resetSize();
-        foodInfo->generateFood(playerPosList, foodBucket);
+        foodBucket->resetSize(); //reset food bucket for new food
+        foodInfo->generateFood(playerPosList, foodBucket); //Generate new food
         for (int i = 0; i < 5; i ++)
         {
-            mainGameMechsRef->incrementScore();
+            mainGameMechsRef->incrementScore(); //Increment the score by 5
         }
     }
     else
@@ -148,15 +144,13 @@ void Player::movePlayer()
         playerPosList->insertHead(currentHead); //otherwise use regular moving algorithm
         playerPosList->removeTail();
     }
-    //then remove tail
-    
 }
 
-bool Player::checkFoodConsumptionNormal()
+bool Player::checkFoodConsumptionNormal() //check normal food consumption
 {
     objPos tempHeadPos;
     objPos tempFood;
-    for(int i = 0; i < foodBucket->getSize(); i++)
+    for(int i = 0; i < foodBucket->getSize(); i++) //Go through the food bucket and check if the head location is equal to the location of a 'o'
     {
         playerPosList->getHeadElement(tempHeadPos);
         foodBucket->getElement(tempFood, i);
@@ -174,7 +168,7 @@ bool Player::checkFoodConsumptionSpecial()
 {
     objPos tempHeadPos;
     objPos tempFood;
-    for(int i = 0; i < foodBucket->getSize(); i++)
+    for(int i = 0; i < foodBucket->getSize(); i++)//Go through the food bucket and check if the head location is equal to the location of a 'x'
     {
         playerPosList->getHeadElement(tempHeadPos);
         foodBucket->getElement(tempFood, i);
@@ -188,15 +182,18 @@ bool Player::checkFoodConsumptionSpecial()
     }
     return false;
 }
-bool Player::checkSelfCollision(){
+bool Player::checkSelfCollision() //check if you run into yourself
+{
     objPos tempHeadPos;
     playerPosList->getHeadElement(tempHeadPos);
+
     objPos tempPlayerElement;
 
-    for(int i = 1; i < playerPosList->getSize(); i++)
+    for(int i = 1; i < playerPosList->getSize(); i++) //Check if the head position is equal to any of the body positions 
     {
         playerPosList->getElement(tempPlayerElement, i);
-        if(tempHeadPos.x == tempPlayerElement.x && tempHeadPos.y == tempPlayerElement.y){
+        if(tempHeadPos.x == tempPlayerElement.x && tempHeadPos.y == tempPlayerElement.y)
+        {
             return true;
         }
     }return false;
