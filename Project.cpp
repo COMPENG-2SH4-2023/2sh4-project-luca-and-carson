@@ -75,9 +75,9 @@ void GetInput(void)
 void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
-    if(myPlayer->checkSelfCollision())
+    if(myPlayer->checkSelfCollision()) //check if the playerhead has collided with any part of the player body
     {
-        myGM->setLoseFlag();
+        myGM->setLoseFlag(); //you lose if you collide with your body
     }else
     {
         myPlayer->movePlayer();
@@ -162,5 +162,7 @@ void CleanUp(void)
     delete myGM;
     delete myPlayer;
     delete foodPos;
+    delete foodBucket;
+    delete playerBody;
     MacUILib_uninit();
 }
